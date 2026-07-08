@@ -1,0 +1,350 @@
+[
+  {
+    "calendar_count": 7,
+    "calendar": [
+      {
+        "date": "08-07周五",
+        "price": "¥550"
+      },
+      {
+        "date": "08-08周六",
+        "price": "¥350低"
+      },
+      {
+        "date": "08-09周日",
+        "price": "¥350低"
+      },
+      {
+        "date": "08-10周一",
+        "price": "¥620"
+      },
+      {
+        "date": "08-11周二",
+        "price": "¥350低"
+      },
+      {
+        "date": "08-12周三",
+        "price": "¥350低"
+      },
+      {
+        "date": "08-13周四",
+        "price": "¥350低"
+      }
+    ],
+    "flight_count": 1,
+    "flights": [
+      {
+        "flight_no": "CA1883",
+        "airline": "东方航空",
+        "aircraft": "A188",
+        "price": 620,
+        "dep_time": "20:30",
+        "arr_time": "22:50",
+        "discount": "85折,2.9折,85折,3.3折,85折,3.3折,3.4折,85折,3.4折,3.4折",
+        "has_stops": false,
+        "time_bucket": "15-21"
+      }
+    ],
+    "route": "PEK-PVG",
+    "orig": "PEK",
+    "dest": "PVG",
+    "note": "京沪经典",
+    "depdate": "2026-08-10"
+  },
+  {
+    "calendar_count": 7,
+    "calendar": [
+      {
+        "date": "08-07周五",
+        "price": "¥550"
+      },
+      {
+        "date": "08-08周六",
+        "price": "¥350低"
+      },
+      {
+        "date": "08-09周日",
+        "price": "¥350低"
+      },
+      {
+        "date": "08-10周一",
+        "price": "¥350低"
+      },
+      {
+        "date": "08-11周二",
+        "price": "¥350低"
+      },
+      {
+        "date": "08-12周三",
+        "price": "¥350低"
+      },
+      {
+        "date": "08-13周四",
+        "price": "¥350低"
+      }
+    ],
+    "flight_count": 1,
+    "flights": [
+      {
+        "flight_no": "MU5231",
+        "airline": "东方航空",
+        "aircraft": "空客320",
+        "price": 350,
+        "dep_time": "23:20",
+        "arr_time": "01:15",
+        "discount": "85折,1.7折",
+        "has_stops": false,
+        "time_bucket": "21-24"
+      }
+    ],
+    "route": "PKX-SHA",
+    "orig": "PKX",
+    "dest": "SHA",
+    "note": "京沪新机场",
+    "depdate": "2026-08-10"
+  },
+  {
+    "calendar_count": 7,
+    "calendar": [
+      {
+        "date": "08-07周五",
+        "price": "¥880"
+      },
+      {
+        "date": "08-08周六",
+        "price": "¥700"
+      },
+      {
+        "date": "08-09周日",
+        "price": "¥600低"
+      },
+      {
+        "date": "08-10周一",
+        "price": "¥600低"
+      },
+      {
+        "date": "08-11周二",
+        "price": "¥600低"
+      },
+      {
+        "date": "08-12周三",
+        "price": "¥600低"
+      },
+      {
+        "date": "08-13周四",
+        "price": "¥600低"
+      }
+    ],
+    "flight_count": 1,
+    "flights": [
+      {
+        "flight_no": "MU5822",
+        "airline": "东方航空",
+        "aircraft": "波音737",
+        "price": 600,
+        "dep_time": "22:00",
+        "arr_time": "01:15",
+        "discount": "85折,1.8折",
+        "has_stops": false,
+        "time_bucket": "21-24"
+      }
+    ],
+    "route": "SHA-KMG",
+    "orig": "SHA",
+    "dest": "KMG",
+    "note": "沪昆避暑",
+    "depdate": "2026-08-10"
+  },
+  {
+    "calendar_count": 7,
+    "calendar": [
+      {
+        "date": "08-07周五",
+        "price": "¥560"
+      },
+      {
+        "date": "08-08周六",
+        "price": "¥390低"
+      },
+      {
+        "date": "08-09周日",
+        "price": "¥450"
+      },
+      {
+        "date": "08-10周一",
+        "price": "¥390低"
+      },
+      {
+        "date": "08-11周二",
+        "price": "¥400"
+      },
+      {
+        "date": "08-12周三",
+        "price": "¥390低"
+      },
+      {
+        "date": "08-13周四",
+        "price": "¥390低"
+      }
+    ],
+    "flight_count": 2,
+    "flights": [
+      {
+        "flight_no": "MU5359",
+        "airline": "春秋航空",
+        "aircraft": "空客320",
+        "price": 390,
+        "dep_time": "23:20",
+        "arr_time": "02:15",
+        "discount": "85折,1.6折,85折,1.7折,85折,1.8折,85折,1.8折,85折,2.1折,85折,2.3折",
+        "has_stops": false,
+        "time_bucket": "21-24"
+      },
+      {
+        "flight_no": "FM9275",
+        "airline": "",
+        "aircraft": "",
+        "price": 926,
+        "dep_time": "08:55",
+        "arr_time": "16:40",
+        "discount": "",
+        "has_stops": false,
+        "time_bucket": "6-9"
+      }
+    ],
+    "route": "SHA-SZX",
+    "orig": "SHA",
+    "dest": "SZX",
+    "note": "沪深商旅",
+    "depdate": "2026-08-10"
+  },
+  {
+    "calendar_count": 5,
+    "calendar": [
+      {
+        "date": "08-07周五",
+        "price": "¥700"
+      },
+      {
+        "date": "08-08周六",
+        "price": "¥600低"
+      },
+      {
+        "date": "08-09周日",
+        "price": "¥600低"
+      },
+      {
+        "date": "08-10周一",
+        "price": "¥600低"
+      },
+      {
+        "date": "08-11周二",
+        "price": "¥600低"
+      }
+    ],
+    "flight_count": 3,
+    "flights": [
+      {
+        "flight_no": "MU5441",
+        "airline": "东方航空",
+        "aircraft": "空客320",
+        "price": 600,
+        "dep_time": "20:45",
+        "arr_time": "23:55",
+        "discount": "85折,2折",
+        "has_stops": false,
+        "time_bucket": "15-21"
+      },
+      {
+        "flight_no": "MU5470",
+        "airline": "东方航空",
+        "aircraft": "空客321",
+        "price": 600,
+        "dep_time": "22:10",
+        "arr_time": "01:20",
+        "discount": "85折,2折",
+        "has_stops": false,
+        "time_bucket": "21-24"
+      },
+      {
+        "flight_no": "CA8567",
+        "airline": "",
+        "aircraft": "A856",
+        "price": 700,
+        "dep_time": "09:25",
+        "arr_time": "18:10",
+        "discount": "",
+        "has_stops": false,
+        "time_bucket": "9-15"
+      }
+    ],
+    "route": "SHA-CTU",
+    "orig": "SHA",
+    "dest": "CTU",
+    "note": "沪蓉旅游",
+    "depdate": "2026-08-10"
+  },
+  {
+    "calendar_count": 7,
+    "calendar": [
+      {
+        "date": "08-07周五",
+        "price": "¥400"
+      },
+      {
+        "date": "08-08周六",
+        "price": "¥290低"
+      },
+      {
+        "date": "08-09周日",
+        "price": "¥300"
+      },
+      {
+        "date": "08-10周一",
+        "price": "¥400"
+      },
+      {
+        "date": "08-11周二",
+        "price": "¥290低"
+      },
+      {
+        "date": "08-12周三",
+        "price": "¥300"
+      },
+      {
+        "date": "08-13周四",
+        "price": "¥300"
+      }
+    ],
+    "flight_count": 2,
+    "flights": [
+      {
+        "flight_no": "MU5641",
+        "airline": "东方航空",
+        "aircraft": "空客320",
+        "price": 400,
+        "dep_time": "21:55",
+        "arr_time": "00:15",
+        "discount": "85折,2折",
+        "has_stops": false,
+        "time_bucket": "21-24"
+      },
+      {
+        "flight_no": "SC2166",
+        "airline": "山东航空",
+        "aircraft": "波音737",
+        "price": 400,
+        "dep_time": "22:20",
+        "arr_time": "00:20",
+        "discount": "85折,2.2折",
+        "has_stops": false,
+        "time_bucket": "21-24"
+      }
+    ],
+    "route": "SHA-XMN",
+    "orig": "SHA",
+    "dest": "XMN",
+    "note": "沪厦旅游",
+    "depdate": "2026-08-10"
+  }
+]

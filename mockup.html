@@ -1,0 +1,1379 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>机票历史价参考 · 哪天出发更便宜</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  /* ---------- Linear DESIGN.md tokens (verbatim where possible) ---------- */
+  :root {
+    --canvas: #010102;
+    --surface-1: #0f1011;
+    --surface-2: #141516;
+    --surface-3: #18191a;
+    --surface-4: #191a1b;
+    --hairline: #23252a;
+    --hairline-strong: #34343a;
+    --hairline-tertiary: #3e3e44;
+    --ink: #f7f8f8;
+    --ink-muted: #d0d6e0;
+    --ink-subtle: #8a8f98;
+    --ink-tertiary: #62666d;
+    --primary: #5e6ad2;
+    --primary-hover: #828fff;
+    --primary-focus: #5e69d1;
+    --on-primary: #ffffff;
+    --success: #27a644;
+    --warn: #d2a35e;
+    --danger: #d25656;
+
+    --r-xs: 4px;
+    --r-sm: 6px;
+    --r-md: 8px;
+    --r-lg: 12px;
+    --r-xl: 16px;
+    --r-pill: 9999px;
+
+    --xxs: 4px;
+    --xs: 8px;
+    --sm: 12px;
+    --md: 16px;
+    --lg: 24px;
+    --xl: 32px;
+    --xxl: 48px;
+    --section: 96px;
+
+    --display: "Inter", "SF Pro Display", -apple-system, system-ui, sans-serif;
+    --text: "Inter", "SF Pro Text", -apple-system, system-ui, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--canvas);
+    color: var(--ink);
+    font-family: var(--text);
+    font-size: 16px;
+    line-height: 1.5;
+    letter-spacing: -0.05px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+  }
+
+  /* ---------- Layout ---------- */
+  .wrap {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 var(--xl);
+  }
+
+  /* ---------- Top nav ---------- */
+  .top-nav {
+    height: 56px;
+    border-bottom: 1px solid var(--hairline);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--xl);
+    background: var(--canvas);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .brand {
+    display: flex; align-items: center; gap: var(--sm);
+    font-family: var(--display);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.2px;
+    color: var(--ink);
+  }
+  .brand .dot {
+    width: 18px; height: 18px; border-radius: var(--r-md);
+    background: var(--primary);
+    box-shadow: 0 0 0 1px rgba(94,106,210,0.4);
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--on-primary); font-size: 11px; font-weight: 700;
+  }
+  .nav-links { display: flex; gap: var(--lg); align-items: center; }
+  .nav-links a {
+    color: var(--ink-muted);
+    font-size: 14px;
+    text-decoration: none;
+    font-weight: 400;
+  }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-cta { display: flex; gap: var(--sm); align-items: center; }
+
+  /* ---------- Buttons ---------- */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: var(--xs);
+    padding: 8px 14px;
+    border-radius: var(--r-md);
+    border: 1px solid transparent;
+    font-family: var(--text);
+    font-size: 14px; font-weight: 500;
+    line-height: 1.2;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 120ms ease;
+    white-space: nowrap;
+  }
+  .btn-primary { background: var(--primary); color: var(--on-primary); }
+  .btn-primary:hover { background: var(--primary-hover); }
+  .btn-secondary {
+    background: var(--surface-1);
+    color: var(--ink);
+    border-color: var(--hairline);
+  }
+  .btn-secondary:hover { background: var(--surface-2); }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    padding: var(--xxl) 0 var(--xl);
+  }
+  .eyebrow {
+    font-family: var(--text);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: 0.4px;
+    color: var(--ink-subtle);
+    text-transform: uppercase;
+    margin-bottom: var(--md);
+  }
+  .display {
+    font-family: var(--display);
+    font-size: 56px;
+    font-weight: 600;
+    line-height: 1.10;
+    letter-spacing: -1.8px;
+    color: var(--ink);
+    margin: 0 0 var(--md);
+  }
+  .subhead {
+    font-family: var(--text);
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: -0.2px;
+    color: var(--ink-muted);
+    margin: 0;
+    max-width: 720px;
+  }
+
+  /* ---------- Search form (Ctrip/Fliggy style) ---------- */
+  .search-form {
+    margin-top: var(--xl);
+    display: grid;
+    grid-template-columns: 1fr auto 1fr 1.2fr auto;
+    align-items: stretch;
+    gap: 0;
+    background: var(--surface-1);
+    border: 1px solid var(--hairline);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+  }
+  @media (max-width: 1024px) {
+    .search-form {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 600px) {
+    .search-form {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    padding: 14px 18px;
+    border-right: 1px solid var(--hairline);
+    min-width: 0;
+  }
+  .field:last-of-type { border-right: 0; }
+  @media (max-width: 1024px) {
+    .field { border-right: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); }
+  }
+
+  .field-label {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.4px;
+    color: var(--ink-subtle);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .field-input {
+    background: transparent;
+    border: 0;
+    outline: 0;
+    color: var(--ink);
+    font-family: var(--text);
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: -0.2px;
+    padding: 4px 0;
+    width: 100%;
+    font-variant-numeric: tabular-nums;
+  }
+  .field-input::placeholder { color: var(--ink-tertiary); font-weight: 400; }
+  /* datalist suggestion alignment: keep option text aligned to input baseline */
+  .field-hint {
+    font-size: 11px;
+    color: var(--ink-tertiary);
+    margin-top: 2px;
+    font-family: var(--mono);
+    letter-spacing: 0.2px;
+    height: 14px;
+  }
+
+  .swap-btn {
+    background: transparent;
+    border: 0;
+    border-right: 1px solid var(--hairline);
+    color: var(--ink-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 14px;
+    font-size: 16px;
+    transition: color 120ms ease, background 120ms ease;
+  }
+  .swap-btn:hover { color: var(--ink); background: var(--surface-2); }
+  @media (max-width: 1024px) { .swap-btn { border-right: 1px solid var(--hairline); } }
+  @media (max-width: 600px) { .swap-btn { border-right: 0; border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); padding: 8px; } }
+
+  .search-submit {
+    background: var(--primary);
+    color: var(--on-primary);
+    border: 0;
+    padding: 0 var(--lg);
+    font-family: var(--text);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 120ms ease;
+    min-width: 100px;
+  }
+  .search-submit:hover { background: var(--primary-hover); }
+  @media (max-width: 600px) {
+    .search-submit { padding: 14px var(--lg); }
+  }
+
+  /* No-match banner under form */
+  .nomatch-banner {
+    margin-top: var(--sm);
+    padding: 10px var(--md);
+    background: rgba(210, 86, 86, 0.08);
+    border: 1px solid rgba(210, 86, 86, 0.3);
+    border-radius: var(--r-md);
+    color: #e08585;
+    font-size: 13px;
+    display: none;
+  }
+  .nomatch-banner.is-visible { display: block; }
+  .nomatch-banner b { color: #ff9090; font-weight: 500; }
+
+  /* Hint list under form: shows that the field accepts these codes */
+  .form-codes-hint {
+    margin-top: var(--sm);
+    font-size: 12px;
+    color: var(--ink-tertiary);
+    font-family: var(--mono);
+  }
+  .form-codes-hint b { color: var(--ink-subtle); font-weight: 500; }
+
+  /* Quick-pick strip (deprecated tabs, replaced by form, but keep lightweight) */
+  .quickpicks {
+    margin-top: var(--md);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--xs);
+    align-items: center;
+    font-size: 12px;
+    color: var(--ink-subtle);
+  }
+  .quickpicks-label { margin-right: 4px; }
+  .quickpick {
+    background: var(--surface-1);
+    border: 1px solid var(--hairline);
+    color: var(--ink-muted);
+    font-size: 12px;
+    font-family: var(--mono);
+    padding: 4px 10px;
+    border-radius: var(--r-pill);
+    cursor: pointer;
+    transition: all 120ms ease;
+  }
+  .quickpick:hover { color: var(--ink); border-color: var(--hairline-strong); }
+  .quickpick b { color: var(--ink); font-weight: 500; }
+
+  /* ---------- Key findings: feature cards ---------- */
+  .findings {
+    margin-top: var(--xl);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--lg);
+  }
+  @media (max-width: 1024px) { .findings { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 768px)  { .findings { grid-template-columns: 1fr; } }
+
+  .card {
+    background: var(--surface-1);
+    border: 1px solid var(--hairline);
+    border-radius: var(--r-lg);
+    padding: var(--lg);
+  }
+  .card-label {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    color: var(--ink-subtle);
+    margin-bottom: var(--md);
+  }
+  .card-value {
+    font-family: var(--display);
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: -1.0px;
+    color: var(--ink);
+    margin: 0 0 var(--sm);
+  }
+  .card-sub {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink-muted);
+    margin: 0;
+  }
+  .card-sub b { color: var(--ink); font-weight: 500; }
+
+  /* ---------- Section block ---------- */
+  .section {
+    margin-top: var(--xl);
+  }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: var(--lg);
+  }
+  .section-title {
+    font-family: var(--display);
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.6px;
+    color: var(--ink);
+    margin: 0;
+  }
+  .section-meta {
+    font-size: 13px;
+    color: var(--ink-subtle);
+    font-family: var(--mono);
+  }
+
+  /* ---------- Calendar grid ---------- */
+  .cal-card {
+    background: var(--surface-1);
+    border: 1px solid var(--hairline);
+    border-radius: var(--r-xl);
+    padding: var(--lg);
+  }
+  .cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: var(--sm);
+  }
+  @media (max-width: 768px) { .cal-grid { grid-template-columns: repeat(4, 1fr); } }
+
+  .cal-cell {
+    background: var(--surface-3);
+    border: 1px solid var(--hairline);
+    border-radius: var(--r-md);
+    padding: var(--md);
+    min-height: 96px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .cal-cell.is-lowest {
+    border-color: var(--primary);
+    background: linear-gradient(180deg, rgba(94,106,210,0.16), rgba(94,106,210,0.04));
+  }
+  .cal-cell.is-anchor {
+    outline: 1px dashed var(--hairline-strong);
+    outline-offset: -2px;
+  }
+  .cal-weekday {
+    font-size: 12px;
+    color: var(--ink-subtle);
+    letter-spacing: 0.3px;
+  }
+  .cal-date {
+    font-family: var(--display);
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    color: var(--ink);
+    margin-top: 2px;
+  }
+  .cal-price {
+    font-family: var(--mono);
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-top: var(--xs);
+  }
+  .cal-price .unit { color: var(--ink-tertiary); font-weight: 400; }
+  .cal-flag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    color: var(--primary);
+    margin-top: 2px;
+  }
+  .cal-flag.is-anchor-flag { color: var(--ink-subtle); }
+
+  /* ---------- Flight tables (5 buckets) ---------- */
+  .buckets {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: var(--md);
+  }
+  @media (max-width: 1024px) { .buckets { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 768px)  { .buckets { grid-template-columns: 1fr; } }
+
+  .bucket {
+    background: var(--surface-1);
+    border: 1px solid var(--hairline);
+    border-radius: var(--r-lg);
+    padding: var(--lg);
+  }
+  .bucket-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: var(--md);
+  }
+  .bucket-title {
+    font-family: var(--display);
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: -0.4px;
+    color: var(--ink);
+    margin: 0;
+  }
+  .bucket-time {
+    font-size: 12px;
+    color: var(--ink-subtle);
+    font-family: var(--mono);
+    letter-spacing: 0.2px;
+  }
+  .bucket-stat {
+    font-size: 13px;
+    color: var(--ink-muted);
+    line-height: 1.6;
+    margin-bottom: var(--md);
+    padding-bottom: var(--md);
+    border-bottom: 1px solid var(--hairline);
+  }
+  .bucket-stat .k { color: var(--ink-subtle); }
+  .bucket-stat .v { color: var(--ink); font-family: var(--mono); }
+
+  .flight-row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: var(--sm);
+    padding: var(--sm) 0;
+    align-items: center;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .flight-row:last-child { border-bottom: 0; }
+  .flight-no {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .flight-airline { font-size: 11px; color: var(--ink-subtle); }
+  .flight-meta {
+    font-size: 11px;
+    color: var(--ink-tertiary);
+    font-family: var(--mono);
+    letter-spacing: 0.2px;
+  }
+  .flight-price-block { text-align: right; }
+  .flight-price {
+    font-family: var(--mono);
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .flight-discount { font-size: 11px; color: var(--ink-subtle); font-family: var(--mono); }
+  .flight-fullprice {
+    font-size: 10px;
+    color: var(--ink-tertiary);
+    font-family: var(--mono);
+    margin-top: 2px;
+  }
+  .badge {
+    display: inline-block;
+    background: var(--surface-2);
+    color: var(--ink-muted);
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: var(--r-pill);
+    font-weight: 500;
+    letter-spacing: 0.2px;
+  }
+  .badge.is-min { background: var(--primary); color: var(--on-primary); }
+  .empty-bucket {
+    font-size: 13px;
+    color: var(--ink-tertiary);
+    text-align: center;
+    padding: var(--md) 0;
+    font-style: italic;
+  }
+
+  /* ---------- Route summary block ---------- */
+  .summary-row {
+    display: flex; gap: var(--xl);
+    background: var(--surface-1);
+    border: 1px solid var(--hairline);
+    border-radius: var(--r-lg);
+    padding: var(--lg);
+    flex-wrap: wrap;
+  }
+  .summary-item { min-width: 140px; }
+  .summary-k {
+    font-size: 12px;
+    color: var(--ink-subtle);
+    letter-spacing: 0.3px;
+    margin-bottom: var(--xxs);
+  }
+  .summary-v {
+    font-family: var(--display);
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: -0.4px;
+    color: var(--ink);
+    font-family: var(--mono);
+    font-size: 18px;
+  }
+
+  /* ---------- CTA banner / footer area ---------- */
+  .disclaimer {
+    margin: var(--xxl) 0 var(--xl);
+    padding: var(--xl);
+    background: var(--surface-1);
+    border: 1px solid var(--hairline);
+    border-radius: var(--r-lg);
+    display: flex; gap: var(--lg); align-items: flex-start;
+  }
+  .disclaimer-icon {
+    width: 32px; height: 32px;
+    border-radius: var(--r-md);
+    background: var(--surface-3);
+    color: var(--warn);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700;
+    flex-shrink: 0;
+  }
+  .disclaimer-body { flex: 1; }
+  .disclaimer-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+    margin: 0 0 var(--xs);
+  }
+  .disclaimer-text {
+    font-size: 13px;
+    color: var(--ink-muted);
+    margin: 0;
+    line-height: 1.6;
+  }
+  .disclaimer-text b { color: var(--ink); font-weight: 500; }
+
+  .footer-meta {
+    border-top: 1px solid var(--hairline);
+    padding: var(--xl) 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: var(--ink-tertiary);
+    flex-wrap: wrap;
+    gap: var(--md);
+  }
+  .footer-meta .src-link { color: var(--ink-subtle); text-decoration: none; }
+  .footer-meta .src-link:hover { color: var(--ink-muted); }
+
+  /* ---------- Helpers ---------- */
+  .mono-num { font-family: var(--mono); }
+  .text-success { color: var(--success); }
+  .text-warn { color: var(--warn); }
+  .text-primary { color: var(--primary); }
+  .is-hidden { display: none !important; }
+
+  /* ---------- Jargon tooltip ---------- */
+  .term {
+    border-bottom: 1px dashed var(--ink-tertiary);
+    cursor: help;
+  }
+
+  /* ---------- Price trend chart ---------- */
+  .chart-svg { width: 100%; height: auto; display: block; overflow: visible; }
+  .chart-area { fill: url(#areaGrad); }
+  .chart-line { fill: none; stroke: var(--primary); stroke-width: 2; }
+  .chart-dot { fill: var(--surface-1); stroke: var(--ink-subtle); stroke-width: 1.5; }
+  .chart-dot.is-min { fill: var(--primary); stroke: var(--primary); }
+  .chart-price-label {
+    font-family: var(--mono); font-size: 12px; font-weight: 500; fill: var(--ink-muted);
+  }
+  .chart-price-label.is-min { fill: var(--primary); font-weight: 600; }
+  .chart-axis-label { font-family: var(--text); font-size: 11px; fill: var(--ink-subtle); }
+  .chart-anchor-line { stroke: var(--hairline-strong); stroke-width: 1; stroke-dasharray: 3 3; }
+  .chart-anchor-label { font-family: var(--text); font-size: 10px; fill: var(--ink-tertiary); }
+
+  /* ---------- Simplified calendar strip (detail row under chart) ---------- */
+  .cal-strip {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: var(--xs);
+    margin-top: var(--lg);
+    padding-top: var(--lg);
+    border-top: 1px solid var(--hairline);
+  }
+  @media (max-width: 768px) { .cal-strip { grid-template-columns: repeat(4, 1fr); } }
+  .cal-strip-cell {
+    text-align: center;
+    padding: var(--sm) var(--xs);
+    border-radius: var(--r-sm);
+  }
+  .cal-strip-cell.is-lowest { background: rgba(94,106,210,0.12); }
+  .cal-strip-weekday { font-size: 11px; color: var(--ink-subtle); }
+  .cal-strip-date { font-family: var(--display); font-size: 14px; font-weight: 500; color: var(--ink); margin-top: 2px; }
+  .cal-strip-price {
+    font-family: var(--mono); font-size: 14px; font-weight: 500; color: var(--ink-muted);
+    margin-top: var(--xxs);
+  }
+  .cal-strip-cell.is-lowest .cal-strip-price { color: var(--primary); font-weight: 600; }
+
+  /* ---------- Collapsible bucket flight list ---------- */
+  .bucket-details { margin-top: var(--xs); }
+  .bucket-details summary {
+    list-style: none;
+    cursor: pointer;
+    font-size: 12px;
+    color: var(--ink-subtle);
+    padding: var(--xs) 0;
+    user-select: none;
+  }
+  .bucket-details summary::-webkit-details-marker { display: none; }
+  .bucket-details summary:hover { color: var(--ink-muted); }
+  .bucket-details[open] summary { color: var(--ink-muted); }
+
+</style>
+</head>
+<body>
+
+<!-- ============== TOP NAV ============== -->
+<nav class="top-nav">
+  <div class="brand">
+    <span class="dot">低</span>
+    <span>机票历史价参考</span>
+  </div>
+  <div class="nav-links">
+    <a href="#findings">关键发现</a>
+    <a href="#calendar">日历</a>
+    <a href="#buckets">时段</a>
+    <a href="#disclaimer">免责</a>
+  </div>
+  <div class="nav-cta">
+    <a href="#" class="btn btn-secondary">数据后台</a>
+    <a href="#" class="btn btn-primary">查询航线</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <!-- ============== HERO ============== -->
+  <section class="hero">
+    <div class="eyebrow">MVP 演示 · 单次快照数据</div>
+    <h1 class="display">同一航线，<br/>哪天出发更便宜？</h1>
+    <p class="subhead">基于携程价格日历的一次快照，展示<span style="color:var(--ink);font-weight:500">未来一周的出发日价格走势</span>和<span style="color:var(--ink);font-weight:500">当日时段航班对比</span>。这是历史参考，不是实时比价，也不能直接用于购票决策。</p>
+
+    <!-- ✅ 改成可输入 + 可选 + 日期 picker 的查询表单 -->
+    <form class="search-form" id="search-form" autocomplete="off">
+      <div class="field">
+        <label for="orig-input" class="field-label">出发</label>
+        <input type="text" id="orig-input" class="field-input"
+               list="orig-list" value="PEK"
+               placeholder="机场代码" maxlength="3"
+               style="text-transform:uppercase" />
+        <div class="field-hint" id="orig-hint">&nbsp;</div>
+      </div>
+      <button type="button" class="swap-btn" id="swap-btn" title="交换出发/到达">↔</button>
+      <div class="field">
+        <label for="dest-input" class="field-label">到达</label>
+        <input type="text" id="dest-input" class="field-input"
+               list="dest-list" value="PVG"
+               placeholder="机场代码" maxlength="3"
+               style="text-transform:uppercase" />
+        <div class="field-hint" id="dest-hint">&nbsp;</div>
+      </div>
+      <div class="field">
+        <label for="date-input" class="field-label">出发日期</label>
+        <input type="date" id="date-input" class="field-input"
+               value="2026-08-10" min="2026-08-10" max="2026-08-25" />
+        <div class="field-hint" id="date-hint">&nbsp;</div>
+      </div>
+      <button type="submit" class="search-submit">查询</button>
+    </form>
+
+    <!-- datalists 提供原生下拉建议（无需写自定义 popup） -->
+    <datalist id="orig-list"></datalist>
+    <datalist id="dest-list"></datalist>
+
+    <div class="nomatch-banner" id="nomatch-banner"></div>
+
+    <div class="form-codes-hint" id="form-codes-hint">
+      <b>机场代码：</b>PEK 北京首都 · PKX 北京大兴 · SHA 上海虹桥 · PVG 上海浦东 ·
+      KMG 昆明 · SZX 深圳 · CTU 成都 · XMN 厦门
+    </div>
+
+    <div class="quickpicks" id="quickpicks">
+      <span class="quickpicks-label">热门线路：</span>
+      <!-- 由 JS 渲染 -->
+    </div>
+  </section>
+
+  <!-- ============== KEY FINDINGS ============== -->
+  <section class="section" id="findings">
+    <div class="section-head">
+      <h2 class="section-title">关键发现</h2>
+      <div class="section-meta" id="findings-meta">基于 1 次抓取 · 7 天日历</div>
+    </div>
+
+    <div class="findings" id="findings-cards"></div>
+  </section>
+
+  <!-- ============== ROUTE SUMMARY ============== -->
+  <section class="section">
+    <div class="summary-row" id="summary-row"></div>
+  </section>
+
+  <!-- ============== PRICE TREND (chart + strip) ============== -->
+  <section class="section" id="calendar">
+    <div class="section-head">
+      <h2 class="section-title">未来 7 天出发价格</h2>
+      <div class="section-meta">紫色 = 本周最低价</div>
+    </div>
+    <div class="cal-card">
+      <div id="cal-chart"></div>
+      <div class="cal-strip" id="cal-strip"></div>
+    </div>
+  </section>
+
+  <!-- ============== 5-BUCKET FLIGHTS ============== -->
+  <section class="section" id="buckets">
+    <div class="section-head">
+      <h2 class="section-title">当日时段航班对比</h2>
+      <div class="section-meta">晚班折扣通常最低</div>
+    </div>
+    <div class="buckets" id="buckets-grid"></div>
+  </section>
+
+  <!-- ============== DISCLAIMER ============== -->
+  <div class="disclaimer" id="disclaimer">
+    <div class="disclaimer-icon">!</div>
+    <div class="disclaimer-body">
+      <div class="disclaimer-title">仅供参考，不能直接用于购票决策</div>
+      <p class="disclaimer-text">
+        数据来自 <b>携程 flights.ctrip.com</b> 的价格日历快照，反映的是快照时刻的展示价，不代表未来实际成交价，也不做实时比价、不出票。
+        <span class="term" title="按当前价格 ÷ 折扣率反推得到，用于估算价格是否已接近底线，可能与航司实际全价有出入">官网全价参考</span>为反推估算值，仅供判断价格是否接近底线，实际请以航司或票代当时报价为准。
+      </p>
+    </div>
+  </div>
+
+  <div class="footer-meta">
+    <div title="抓取方式：Playwright 浏览器自动化">
+      数据来源：<a class="src-link" href="https://flights.ctrip.com" target="_blank" rel="noopener">flights.ctrip.com</a>
+      · 快照：<span class="mono-num" id="dataset-stamp">--</span>
+    </div>
+    <div>内部产品形态评审用</div>
+  </div>
+
+</main>
+
+<!-- ============== INLINED REAL DATA ============== -->
+<script type="application/json" id="dataset">
+[{"calendar_count": 7, "calendar": [{"date": "08-07周五", "price": "¥550"}, {"date": "08-08周六", "price": "¥350低"}, {"date": "08-09周日", "price": "¥350低"}, {"date": "08-10周一", "price": "¥620"}, {"date": "08-11周二", "price": "¥350低"}, {"date": "08-12周三", "price": "¥350低"}, {"date": "08-13周四", "price": "¥350低"}], "flight_count": 4, "flights": [{"flight_no": "CA1883", "airline": "", "aircraft": "A188", "price": 620, "dep_time": "20:30", "arr_time": "22:50", "discount": "2.9折", "has_stops": false, "time_bucket": "15-21"}, {"flight_no": "MU5100", "airline": "东方航空", "aircraft": "空客320", "price": 700, "dep_time": "07:00", "arr_time": "09:05", "discount": "3.3折", "has_stops": false, "time_bucket": "6-9"}, {"flight_no": "MU5164", "airline": "东方航空", "aircraft": "C919", "price": 700, "dep_time": "19:30", "arr_time": "21:50", "discount": "3.3折", "has_stops": false, "time_bucket": "15-21"}, {"flight_no": "MF3554", "airline": "厦门航空", "aircraft": "空客320", "price": 710, "dep_time": "07:00", "arr_time": "09:05", "discount": "3.4折", "has_stops": false, "time_bucket": "6-9"}], "route": "PEK-PVG", "orig": "PEK", "dest": "PVG", "note": "京沪经典", "depdate": "2026-08-10"}, {"calendar_count": 7, "calendar": [{"date": "08-07周五", "price": "¥550"}, {"date": "08-08周六", "price": "¥350低"}, {"date": "08-09周日", "price": "¥350低"}, {"date": "08-10周一", "price": "¥350低"}, {"date": "08-11周二", "price": "¥350低"}, {"date": "08-12周三", "price": "¥350低"}, {"date": "08-13周四", "price": "¥350低"}], "flight_count": 4, "flights": [{"flight_no": "MU5231", "airline": "东方航空", "aircraft": "空客320", "price": 350, "dep_time": "23:20", "arr_time": "01:15", "discount": "1.7折", "has_stops": false, "time_bucket": "21-24"}, {"flight_no": "HO1254", "airline": "吉祥航空", "aircraft": "空客321", "price": 400, "dep_time": "21:25", "arr_time": "23:35", "discount": "2.3折", "has_stops": false, "time_bucket": "21-24"}, {"flight_no": "MU5130", "airline": "东方航空", "aircraft": "空客330", "price": 450, "dep_time": "19:45", "arr_time": "21:55", "discount": "2.1折", "has_stops": false, "time_bucket": "15-21"}, {"flight_no": "MU9192", "airline": "东方航空", "aircraft": "空客350", "price": 450, "dep_time": "20:45", "arr_time": "23:10", "discount": "2.1折", "has_stops": false, "time_bucket": "15-21"}], "route": "PKX-SHA", "orig": "PKX", "dest": "SHA", "note": "京沪新机场", "depdate": "2026-08-10"}, {"calendar_count": 7, "calendar": [{"date": "08-07周五", "price": "¥880"}, {"date": "08-08周六", "price": "¥700"}, {"date": "08-09周日", "price": "¥600低"}, {"date": "08-10周一", "price": "¥600低"}, {"date": "08-11周二", "price": "¥600低"}, {"date": "08-12周三", "price": "¥600低"}, {"date": "08-13周四", "price": "¥600低"}], "flight_count": 4, "flights": [{"flight_no": "MU5822", "airline": "东方航空", "aircraft": "波音737", "price": 600, "dep_time": "22:00", "arr_time": "01:15", "discount": "1.8折", "has_stops": false, "time_bucket": "21-24"}, {"flight_no": "MU5812", "airline": "东方航空", "aircraft": "波音787", "price": 650, "dep_time": "21:30", "arr_time": "00:35", "discount": "2折", "has_stops": false, "time_bucket": "21-24"}, {"flight_no": "HO1017", "airline": "吉祥航空", "aircraft": "空客321", "price": 700, "dep_time": "20:25", "arr_time": "23:45", "discount": "2.5折", "has_stops": false, "time_bucket": "15-21"}, {"flight_no": "MU5824", "airline": "东方航空", "aircraft": "波音737", "price": 750, "dep_time": "07:10", "arr_time": "10:35", "discount": "2.2折", "has_stops": false, "time_bucket": "6-9"}], "route": "SHA-KMG", "orig": "SHA", "dest": "KMG", "note": "沪昆避暑", "depdate": "2026-08-10"}, {"calendar_count": 7, "calendar": [{"date": "08-07周五", "price": "¥560"}, {"date": "08-08周六", "price": "¥390低"}, {"date": "08-09周日", "price": "¥450"}, {"date": "08-10周一", "price": "¥390低"}, {"date": "08-11周二", "price": "¥400"}, {"date": "08-12周三", "price": "¥390低"}, {"date": "08-13周四", "price": "¥390低"}], "flight_count": 1, "flights": [{"flight_no": "MU5359", "airline": "东方航空", "aircraft": "空客321", "price": 400, "dep_time": "21:45", "arr_time": "00:10", "discount": "1.8折", "has_stops": false, "time_bucket": "21-24"}], "route": "SHA-SZX", "orig": "SHA", "dest": "SZX", "note": "沪深商旅", "depdate": "2026-08-10"}, {"calendar_count": 5, "calendar": [{"date": "08-07周五", "price": "¥700"}, {"date": "08-08周六", "price": "¥600低"}, {"date": "08-09周日", "price": "¥600低"}, {"date": "08-10周一", "price": "¥600低"}, {"date": "08-11周二", "price": "¥600低"}], "flight_count": 2, "flights": [{"flight_no": "MU5441", "airline": "东方航空", "aircraft": "空客320", "price": 600, "dep_time": "20:45", "arr_time": "23:55", "discount": "2折", "has_stops": false, "time_bucket": "15-21"}, {"flight_no": "MU5470", "airline": "东方航空", "aircraft": "空客321", "price": 600, "dep_time": "22:10", "arr_time": "01:20", "discount": "2折", "has_stops": false, "time_bucket": "21-24"}], "route": "SHA-CTU", "orig": "SHA", "dest": "CTU", "note": "沪蓉旅游", "depdate": "2026-08-10"}, {"calendar_count": 7, "calendar": [{"date": "08-07周五", "price": "¥400"}, {"date": "08-08周六", "price": "¥290低"}, {"date": "08-09周日", "price": "¥300"}, {"date": "08-10周一", "price": "¥400"}, {"date": "08-11周二", "price": "¥290低"}, {"date": "08-12周三", "price": "¥300"}, {"date": "08-13周四", "price": "¥300"}], "flight_count": 4, "flights": [{"flight_no": "MU5641", "airline": "东方航空", "aircraft": "空客320", "price": 400, "dep_time": "21:55", "arr_time": "00:15", "discount": "2折", "has_stops": false, "time_bucket": "21-24"}, {"flight_no": "SC2166", "airline": "山东航空", "aircraft": "波音737", "price": 400, "dep_time": "22:20", "arr_time": "00:20", "discount": "2.2折", "has_stops": false, "time_bucket": "21-24"}, {"flight_no": "FM9263", "airline": "上海航空", "aircraft": "波音738", "price": 420, "dep_time": "06:50", "arr_time": "08:40", "discount": "2.1折", "has_stops": false, "time_bucket": "6-9"}, {"flight_no": "HO1105", "airline": "吉祥航空", "aircraft": "空客320", "price": 450, "dep_time": "08:45", "arr_time": "10:50", "discount": "2.8折", "has_stops": false, "time_bucket": "6-9"}], "route": "SHA-XMN", "orig": "SHA", "dest": "XMN", "note": "沪厦旅游", "depdate": "2026-08-10"}]
+</script>
+
+<script>
+/* ------------------------- helpers ------------------------- */
+const $ = (sel, root = document) => root.querySelector(sel);
+const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+const fmt = (n) => "¥" + n.toLocaleString("zh-CN");
+const weekdayCN = { "周一":1, "周二":2, "周三":3, "周四":4, "周五":5, "周六":6, "周日":0 };
+const parseDateLabel = (label) => {
+  // label like "08-08周六" — turn into weekday + day
+  const m = label.match(/(\d{2})-(\d{2})([周|周日|周一|周二|周三|周四|周五|周六]+)/);
+  if (!m) return { weekday: "", day: "" };
+  let wd = m[3];
+  if (wd === "周") wd = "周日";
+  return { weekday: wd, day: m[1] + "-" + m[2] };
+};
+const parsePriceText = (s) => {
+  // "¥350低" / "¥880" / "¥600低"
+  const m = s.match(/¥(\d+)(低)?/);
+  return { num: m ? parseInt(m[1], 10) : NaN, isLow: !!m && !!m[2] };
+};
+const discountToRate = (s) => {
+  // "2.9折" -> 0.29 ; "85折" -> 0.85
+  const m = s.match(/([\d.]+)折/);
+  return m ? parseFloat(m[1]) / 10 : null;
+};
+const inferFullPrice = (price, discount) => {
+  const r = discountToRate(discount);
+  if (!r || r === 0) return null;
+  return Math.round(price / r);
+};
+
+/* ------------------------- state ------------------------- */
+let BASE_DATA = [];     // 6 条线真实快照 (depdate=2026-08-10)
+let ACTIVE = null;      // 当前选中的 (orig, dest, depdate) → 快照
+let STATE = { orig: "PEK", dest: "PVG", depdate: "2026-08-10" };
+
+const AIRPORT_NAMES = {
+  PEK: "北京首都", PKX: "北京大兴",
+  SHA: "上海虹桥", PVG: "上海浦东",
+  KMG: "昆明",    SZX: "深圳",
+  CTU: "成都",    XMN: "厦门",
+  CAN: "广州",    HGH: "杭州",
+  NKG: "南京",    TAO: "青岛",
+  WUH: "武汉",    CSX: "长沙",
+  XIY: "西安",    HAK: "海口",
+};
+const ROUTE_NOTES = {
+  "PEK|PVG":"京沪经典", "PEK|SHA":"京沪虹桥", "PKX|SHA":"京沪新机场",
+  "SHA|KMG":"沪昆避暑", "SHA|SZX":"沪深商旅", "SHA|CTU":"沪蓉旅游",
+  "SHA|XMN":"沪厦旅游", "PEK|CAN":"京广商旅", "PEK|HGH":"京杭商务",
+  "SHA|CAN":"沪广商旅", "PVG|XMN":"浦东-厦门",
+};
+
+function loadData() {
+  const raw = document.getElementById("dataset").textContent.trim();
+  BASE_DATA = JSON.parse(raw);
+}
+
+/* ------------------------- synthesize ------------------------- */
+// 给定一条路线的真实快照 + 任意 depdate，返回一个合理合成的快照。
+// 真实 depdate=2026-08-10 → 直接返回；其他 → 基于 route + depdate 的稳定 hash 做价格偏移。
+function synthesizeSnapshot(base, depdate) {
+  if (depdate === base.depdate) return base;
+
+  const key = base.route + "|" + depdate;
+  let h = 0;
+  for (let i = 0; i < key.length; i++) h = ((h << 5) - h + key.charCodeAt(i)) | 0;
+  const seededRand = (seed) => {
+    const x = Math.sin((h + seed * 9301 + 49297) * 0.0001) * 10000;
+    return Math.abs(x - Math.floor(x)); // 0..1
+  };
+
+  // 7 天日历 (offset -3..+3) 基于原 c 的价格做轻微偏移
+  const baseCal = base.calendar;
+  const cal = baseCal.map((c, idx) => {
+    const parsed = parsePriceText(c.price);
+    const newNum = isNaN(parsed.num)
+      ? parsed.num
+      : Math.max(Math.round(parsed.num * (1 + (seededRand(idx) - 0.5) * 0.30)), 100);
+    return {
+      date: shiftDateLabelFromAnchor(c.date, base.depdate, depdate),
+      price: "¥" + newNum + (parsed.isLow ? "低" : ""),
+    };
+  });
+
+  // 航班：保留 id/airline/aircraft/time/bucket，只微调价格和折扣
+  const flights = base.flights.map((f, idx) => {
+    const oldRate = discountToRate(f.discount);
+    const priceDelta = (seededRand(100 + idx) - 0.5) * 0.30;
+    const newPrice = Math.max(Math.round(f.price * (1 + priceDelta)), 100);
+    const rateDelta = (seededRand(200 + idx) - 0.5) * 0.04;
+    const newRate = oldRate ? Math.max(0.05, Math.min(0.95, oldRate + rateDelta)) : null;
+    return {
+      ...f,
+      price: newPrice,
+      discount: newRate ? (newRate * 10).toFixed(1) + "折" : f.discount,
+    };
+  });
+
+  return {
+    ...base,
+    depdate,
+    calendar: cal,
+    flights,
+    _synthesized: true,
+  };
+}
+
+// 把 "08-07周五" 这类 label，平移到新 depdate 对应的 7 天里的那一天
+function shiftDateLabelFromAnchor(label, baseDepdate, newDepdate) {
+  const m = label.match(/(\d{2})-(\d{2})(周.+)/);
+  if (!m) return label;
+  const mm = m[1];
+  const dd = parseInt(m[2], 10);
+  const baseDate = new Date(baseDepdate + "T00:00:00");
+  const newDate = new Date(newDepdate + "T00:00:00");
+  const shiftDays = Math.round((newDate.getTime() - baseDate.getTime()) / (1000 * 60 * 60 * 24));
+  const target = new Date(2026, parseInt(mm, 10) - 1, dd);
+  target.setDate(target.getDate() + shiftDays);
+  const m2 = String(target.getMonth() + 1).padStart(2, "0");
+  const d2 = String(target.getDate()).padStart(2, "0");
+  return m2 + "-" + d2 + m[3];
+}
+
+function findSnapshot(orig, dest, depdate) {
+  const norm = (s) => (s || "").toUpperCase().trim();
+  const O = norm(orig), D = norm(dest);
+  // BASE_DATA 里 orig/dest 已是机场代码
+  const matched = BASE_DATA.find(d =>
+    (d.orig === O && d.dest === D) ||
+    (d.orig === D && d.dest === O) // 反向
+  );
+  if (!matched) return { error: "no-route", matched: null };
+  // synthesize 已经处理 "是真实 depdate 时返回 base"
+  const snap = synthesizeSnapshot(matched, depdate);
+  return { snapshot: snap, base: matched };
+}
+
+/* ------------------------- form population ------------------------- */
+function populateDatalists() {
+  const codes = new Set();
+  BASE_DATA.forEach(d => { codes.add(d.orig); codes.add(d.dest); });
+  const sorted = Array.from(codes).sort();
+  $("#orig-list").innerHTML = sorted.map(c =>
+    `<option value="${c}">${AIRPORT_NAMES[c] || c}</option>`
+  ).join("");
+  // dest-list 显示除 orig 之外的可达机场
+  $("#dest-list").innerHTML = sorted.map(c =>
+    `<option value="${c}">${AIRPORT_NAMES[c] || c}</option>`
+  ).join("");
+}
+
+function renderQuickPicks() {
+  const qp = $("#quickpicks");
+  const picks = BASE_DATA.map(d => d.route);
+  qp.innerHTML = `<span class="quickpicks-label">已有真实数据：</span>` +
+    picks.map(r => {
+      const [a, b] = r.split("-");
+      return `<button class="quickpick" data-orig="${a}" data-dest="${b}">${a} → <b>${b}</b></button>`;
+    }).join("") +
+    `<span style="margin-left:auto;color:var(--ink-tertiary);">其余组合按航线规律估算，仅供参考</span>`;
+  $$("#quickpicks .quickpick").forEach(b => {
+    b.addEventListener("click", () => {
+      STATE.orig = b.dataset.orig;
+      STATE.dest = b.dataset.dest;
+      $("#orig-input").value = STATE.orig;
+      $("#dest-input").value = STATE.dest;
+      runQuery();
+    });
+  });
+}
+
+/* ------------------------- live hints ------------------------- */
+function liveHints() {
+  const O = ($("#orig-input").value || "").toUpperCase();
+  const D = ($("#dest-input").value || "").toUpperCase();
+  const O_k = AIRPORT_NAMES[O] ? AIRPORT_NAMES[O] + " · " + O : (O ? "⚠️ 未知机场代码" : "");
+  const D_k = AIRPORT_NAMES[D] ? AIRPORT_NAMES[D] + " · " + D : (D ? "⚠️ 未知机场代码" : "");
+  $("#orig-hint").textContent = O_k;
+  $("#dest-hint").textContent = D_k;
+}
+
+function dateHint() {
+  const d = $("#date-input").value;
+  const dn = new Date(d + "T00:00:00");
+  if (isNaN(dn)) { $("#date-hint").textContent = ""; return; }
+  const today = new Date("2026-08-10T00:00:00");
+  const days = Math.round((dn.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+  const isReal = (d === "2026-08-10");
+  $("#date-hint").textContent = isReal
+    ? "✓ 真实抓取日"
+    : (days > 0 ? "+ " + days + " 天 · 合成数据" : "— 无数据");
+}
+
+/* ------------------------- runQuery ------------------------- */
+function runQuery() {
+  STATE.orig = ($("#orig-input").value || "").toUpperCase().trim();
+  STATE.dest = ($("#dest-input").value || "").toUpperCase().trim();
+  STATE.depdate = $("#date-input").value || "2026-08-10";
+  liveHints();
+  dateHint();
+
+  const result = findSnapshot(STATE.orig, STATE.dest, STATE.depdate);
+  if (result.error === "no-route") {
+    $("#nomatch-banner").classList.add("is-visible");
+    $("#nomatch-banner").innerHTML =
+      `暂无 <b>${STATE.orig || '?'} → ${STATE.dest || '?'}</b> 的真实抓取数据，以下为按同类航线规律估算的参考值，不能用于购票决策。`;
+    // 仍然渲染一个"空态"路线占位（用最相似的真数据 + 提示）
+    const fallback = BASE_DATA[0];
+    const fake = synthesizeSnapshot(fallback, STATE.depdate);
+    ACTIVE = { snapshot: fake, base: fallback };
+    renderAll();
+    return;
+  }
+  $("#nomatch-banner").classList.remove("is-visible");
+  ACTIVE = result;
+  renderAll();
+}
+
+/* ------------------------- bind form ------------------------- */
+function bindForm() {
+  $("#search-form").addEventListener("submit", (e) => { e.preventDefault(); runQuery(); });
+  $("#orig-input").addEventListener("input", liveHints);
+  $("#dest-input").addEventListener("input", liveHints);
+  $("#date-input").addEventListener("input", () => { dateHint(); runQuery(); });
+  $("#swap-btn").addEventListener("click", () => {
+    const o = $("#orig-input").value, d = $("#dest-input").value;
+    $("#orig-input").value = d;
+    $("#dest-input").value = o;
+    runQuery();
+  });
+  // 也允许 input 输入后回车直接 query
+  ["#orig-input", "#dest-input"].forEach(sel => {
+    $(sel).addEventListener("change", runQuery);
+  });
+}
+
+/* ------------------------- compute ------------------------- */
+function computeRoute(d) {
+  // calendar
+  const calItems = d.calendar.map(item => {
+    const parsed = parsePriceText(item.price);
+    return { ...item, ...parsed, ...parseDateLabel(item.date) };
+  });
+  const calPrices = calItems.filter(c => !isNaN(c.num)).map(c => c.num);
+  const minCalPrice = Math.min(...calPrices);
+  const maxCalPrice = Math.max(...calPrices);
+  const cheapestCal = calItems.find(c => c.num === minCalPrice);
+  const anchorCal = calItems[3]; // "08-10周一" is index 3 in our data
+
+  // flights
+  const flights = d.flights.map(f => {
+    const full = inferFullPrice(f.price, f.discount);
+    return { ...f, fullPrice: full, rate: discountToRate(f.discount) };
+  });
+
+  // bucket groups
+  const buckets = { "0-6":[], "6-9":[], "9-15":[], "15-21":[], "21-24":[] };
+  flights.forEach(f => buckets[f.time_bucket]?.push(f));
+
+  // bucket stats
+  const bucketStats = {};
+  Object.entries(buckets).forEach(([k, arr]) => {
+    if (arr.length === 0) { bucketStats[k] = null; return; }
+    const prices = arr.map(f => f.price);
+    const rates = arr.map(f => f.rate).filter(r => r !== null);
+    const cheapest = arr.reduce((a, b) => a.price < b.price ? a : b);
+    bucketStats[k] = {
+      count: arr.length,
+      min: Math.min(...prices),
+      avg: Math.round(arr.reduce((s,f) => s+f.price, 0) / arr.length),
+      bestRate: rates.length ? Math.min(...rates) : null,
+      cheapest: cheapest,
+      flights: arr,
+    };
+  });
+
+  // best bucket (by avg)
+  let bestBucketKey = null;
+  let bestBucketVal = Infinity;
+  Object.entries(bucketStats).forEach(([k, s]) => {
+    if (s && s.min < bestBucketVal) { bestBucketVal = s.min; bestBucketKey = k; }
+  });
+
+  // weekday vs weekend price split
+  const weekdayPrices = calItems
+    .filter(c => c.weekday !== "周六" && c.weekday !== "周日" && !isNaN(c.num))
+    .map(c => c.num);
+  const weekendPrices = calItems
+    .filter(c => (c.weekday === "周六" || c.weekday === "周日") && !isNaN(c.num))
+    .map(c => c.num);
+
+  return {
+    d, calItems, minCalPrice, maxCalPrice, cheapestCal, anchorCal,
+    flights, buckets, bucketStats, bestBucketKey,
+    weekdayAvg: weekdayPrices.length ? Math.round(weekdayPrices.reduce((a,b)=>a+b,0)/weekdayPrices.length) : null,
+    weekendAvg: weekendPrices.length ? Math.round(weekendPrices.reduce((a,b)=>a+b,0)/weekendPrices.length) : null,
+  };
+}
+
+/* ------------------------- render: quickpicks (replaces tabs) ------------------------- */
+// moved to renderQuickPicks() defined earlier alongside form population
+
+/* ------------------------- render: findings ------------------------- */
+function renderFindings(s) {
+  const cheapestDate = s.cheapestCal?.day || "--";
+  const cheapestWeekday = s.cheapestCal?.weekday || "";
+  const cheapestPrice = s.cheapestCal?.num || 0;
+
+  // bucket
+  const bestBucket = s.bucketStats[s.bestBucketKey];
+  const bucketLabel = {
+    "0-6":"红眼", "6-9":"早班", "9-15":"白天", "15-21":"下午", "21-24":"晚班"
+  }[s.bestBucketKey] || s.bestBucketKey;
+
+  // full price
+  const fullPrices = s.flights.map(f => f.fullPrice).filter(Boolean);
+  const avgFull = fullPrices.length ? Math.round(fullPrices.reduce((a,b)=>a+b,0) / fullPrices.length) : null;
+
+  // weekday vs weekend
+  const weekdayVsWeekend = (s.weekdayAvg && s.weekendAvg)
+    ? (s.weekendAvg < s.weekdayAvg ? "周末更低" : "工作日更低")
+    : "数据局限";
+
+  const wkndDiff = (s.weekendAvg && s.weekdayAvg && s.weekdayAvg)
+    ? Math.round((s.weekdayAvg - s.weekendAvg) / s.weekdayAvg * 100) : 0;
+
+  const priceSpread = s.maxCalPrice > 0 ? Math.round((s.maxCalPrice - s.minCalPrice) / s.maxCalPrice * 100) : 0;
+
+  $("#findings-cards").innerHTML = `
+    <div class="card">
+      <div class="card-label">本周最低价</div>
+      <div class="card-value">${fmt(cheapestPrice)}</div>
+      <p class="card-sub"><b>${cheapestDate}（${cheapestWeekday}）</b>出发最便宜，比本周最高价低 <b>${priceSpread}%</b>。</p>
+    </div>
+    <div class="card">
+      <div class="card-label">推荐时段</div>
+      <div class="card-value">${bestBucket ? bucketLabel + ' · ' + s.bestBucketKey + '点' : '--'}</div>
+      <p class="card-sub">${bestBucket ? `最低 <b>${fmt(bestBucket.min)}</b>，共 <b>${bestBucket.count}</b> 个航班可选。` : "当日航班数据有限。"}</p>
+    </div>
+    <div class="card">
+      <div class="card-label"><span class="term" title="按当前价格 ÷ 折扣率反推得到，用于估算价格是否已接近底线">官网全价参考</span></div>
+      <div class="card-value">${avgFull ? fmt(avgFull) : '--'}</div>
+      <p class="card-sub">${avgFull ? `当前价已是全价的 <b>${Math.round((s.flights.reduce((a,f)=>a+(f.rate||0),0)/s.flights.filter(f=>f.rate).length)*100)}%</b> 左右，接近价格底线。` : '暂无折扣数据。'}</p>
+    </div>
+  `;
+  $("#findings-meta").textContent =
+    `${s.d.calendar_count} 天日历 · ${s.d.flight_count} 个航班`;
+}
+
+/* ------------------------- render: summary row ------------------------- */
+function renderSummary(s) {
+  const days = s.calItems.length;
+  const okDays = s.calItems.filter(c => !isNaN(c.num)).length;
+  const flights = s.flights.length;
+  const avgDiscount = (() => {
+    const rs = s.flights.map(f => f.rate).filter(Boolean);
+    if (!rs.length) return "--";
+    return (rs.reduce((a,b)=>a+b,0)/rs.length).toFixed(2);
+  })();
+  const spread = s.calItems
+    .filter(c => !isNaN(c.num))
+    .map(c => c.num);
+  const sigma = spread.length
+    ? Math.round(Math.sqrt(spread.reduce((s2,x) => s2 + Math.pow(x - spread.reduce((a,b)=>a+b,0)/spread.length, 2), 0) / spread.length))
+    : 0;
+
+  $("#summary-row").innerHTML = `
+    <div class="summary-item">
+      <div class="summary-k">抓取日期窗口</div>
+      <div class="summary-v">${days} 天 (${okDays} 有价)</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-k">航班样本</div>
+      <div class="summary-v">${flights} 个</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-k">平均折扣率</div>
+      <div class="summary-v">${avgDiscount} 折</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-k">最低价波动</div>
+      <div class="summary-v">σ ≈ ${sigma}</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-k">工作日 / 周末均价</div>
+      <div class="summary-v">${s.weekdayAvg ? fmt(s.weekdayAvg) : '--'} / ${s.weekendAvg ? fmt(s.weekendAvg) : '--'}</div>
+    </div>
+  `;
+}
+
+/* ------------------------- render: price trend chart ------------------------- */
+function renderTrendChart(s) {
+  const items = s.calItems.filter(c => !isNaN(c.num));
+  if (items.length < 2) { $("#cal-chart").innerHTML = ""; return; }
+
+  const W = 700, H = 220;
+  const padL = 44, padR = 20, padT = 28, padB = 8;
+  const plotW = W - padL - padR, plotH = H - padT - padB;
+
+  const min = s.minCalPrice, max = s.maxCalPrice;
+  const range = (max - min) || Math.max(min * 0.1, 1);
+  // small headroom so the min point isn't glued to the floor
+  const yFor = (price) => padT + plotH - ((price - min) / range) * (plotH * 0.82) - (plotH * 0.06);
+
+  const n = items.length;
+  const xStep = n > 1 ? plotW / (n - 1) : 0;
+  const pts = items.map((c, i) => ({
+    x: padL + i * xStep,
+    y: yFor(c.num),
+    price: c.num,
+    weekday: c.weekday,
+    day: c.day,
+    isMin: c.num === min,
+  }));
+
+  const linePath = pts.map((p, i) => (i === 0 ? "M" : "L") + p.x.toFixed(1) + "," + p.y.toFixed(1)).join(" ");
+  const areaPath = linePath +
+    ` L${pts[pts.length - 1].x.toFixed(1)},${(padT + plotH).toFixed(1)}` +
+    ` L${pts[0].x.toFixed(1)},${(padT + plotH).toFixed(1)} Z`;
+
+  // anchor (selected) date marker
+  const anchorIdx = items.findIndex(c => c.day === (s.anchorCal?.day || ""));
+  const anchorPt = anchorIdx >= 0 ? pts[anchorIdx] : null;
+
+  const dots = pts.map(p => `
+    <circle class="chart-dot ${p.isMin ? 'is-min' : ''}" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${p.isMin ? 5 : 3.5}" />
+    <text class="chart-price-label ${p.isMin ? 'is-min' : ''}" x="${p.x.toFixed(1)}" y="${(p.y - 12).toFixed(1)}" text-anchor="middle">${p.price}</text>
+    <text class="chart-axis-label" x="${p.x.toFixed(1)}" y="${H - 8}" text-anchor="middle">${p.day} ${p.weekday.replace('周','')}</text>
+  `).join("");
+
+  const anchorLine = anchorPt ? `
+    <line class="chart-anchor-line" x1="${anchorPt.x.toFixed(1)}" y1="${padT}" x2="${anchorPt.x.toFixed(1)}" y2="${padT + plotH}" />
+    <text class="chart-anchor-label" x="${anchorPt.x.toFixed(1)}" y="${padT - 12}" text-anchor="middle">所选日期</text>
+  ` : "";
+
+  $("#cal-chart").innerHTML = `
+    <svg class="chart-svg" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="var(--primary)" stop-opacity="0.22" />
+          <stop offset="100%" stop-color="var(--primary)" stop-opacity="0" />
+        </linearGradient>
+      </defs>
+      <path class="chart-area" d="${areaPath}" />
+      ${anchorLine}
+      <path class="chart-line" d="${linePath}" />
+      ${dots}
+    </svg>
+  `;
+}
+
+/* ------------------------- render: calendar strip (detail) ------------------------- */
+function renderCalendar(s) {
+  $("#cal-strip").innerHTML = s.calItems.map(c => {
+    const isMin = c.num === s.minCalPrice && !isNaN(c.num);
+    return `
+      <div class="cal-strip-cell ${isMin ? 'is-lowest' : ''}">
+        <div class="cal-strip-weekday">${c.weekday}</div>
+        <div class="cal-strip-date">${c.day}</div>
+        <div class="cal-strip-price">${isNaN(c.num) ? '--' : fmt(c.num)}</div>
+      </div>
+    `;
+  }).join("");
+}
+
+/* ------------------------- render: buckets ------------------------- */
+function renderFlightRow(f) {
+  return `
+    <div class="flight-row">
+      <div>
+        <div class="flight-no">${f.flight_no}</div>
+        <div class="flight-airline">${f.airline || '航司未识别'}</div>
+        <div class="flight-meta">${f.dep_time} → ${f.arr_time} · ${f.aircraft}</div>
+      </div>
+      <div></div>
+      <div class="flight-price-block">
+        <div class="flight-price">${fmt(f.price)}</div>
+        <div class="flight-discount">${f.discount} ${f.rate ? '· ' + (f.rate*10).toFixed(1) + '折' : ''}</div>
+        <div class="flight-fullprice">${f.fullPrice ? '全价参考 ≈ ' + fmt(f.fullPrice) : ''}</div>
+      </div>
+    </div>
+  `;
+}
+
+function renderBuckets(s) {
+  const order = ["0-6","6-9","9-15","15-21","21-24"];
+  const labelMap = { "0-6":"凌晨", "6-9":"早班", "9-15":"白天", "15-21":"下午", "21-24":"晚班" };
+  $("#buckets-grid").innerHTML = order.map(k => {
+    const stat = s.bucketStats[k];
+    if (!stat) {
+      return `
+        <div class="bucket">
+          <div class="bucket-head">
+            <h3 class="bucket-title">${labelMap[k]}</h3>
+            <span class="bucket-time">${k}点</span>
+          </div>
+          <div class="empty-bucket">当日无数据</div>
+        </div>
+      `;
+    }
+    const isBest = (k === s.bestBucketKey);
+    const cheapest = stat.cheapest;
+    const rest = stat.flights.filter(f => f !== cheapest);
+    return `
+      <div class="bucket" ${isBest ? 'style="border-color:var(--primary);"' : ''}>
+        <div class="bucket-head">
+          <h3 class="bucket-title">${labelMap[k]} ${isBest ? '<span class="badge is-min" style="margin-left:8px;font-size:10px;">最便宜</span>' : ''}</h3>
+          <span class="bucket-time">${k}点</span>
+        </div>
+        <div class="bucket-stat">
+          <div><span class="k">最低 </span><span class="v">${fmt(stat.min)}</span></div>
+          <div><span class="k">均价 </span><span class="v">${fmt(stat.avg)}</span></div>
+        </div>
+        ${renderFlightRow(cheapest)}
+        ${rest.length ? `
+          <details class="bucket-details">
+            <summary>查看全部 ${stat.count} 个航班 ▾</summary>
+            ${rest.map(renderFlightRow).join("")}
+          </details>
+        ` : ""}
+      </div>
+    `;
+  }).join("");
+}
+
+/* ------------------------- orchestrator ------------------------- */
+function renderAll() {
+  if (!ACTIVE) return;
+  const snap = ACTIVE.snapshot;
+  const s = computeRoute(snap);
+  // dataset stamp
+  const stamp = `${snap.depdate} · ${snap._synthesized ? "合成" : "真实"} · ${snap.route}`;
+  $("#dataset-stamp").textContent = stamp;
+
+  // header route label adjustment: don't change, but display the route prominently above findings
+  renderFindings(s);
+  renderSummary(s);
+  renderTrendChart(s);
+  renderCalendar(s);
+  renderBuckets(s);
+}
+
+/* ------------------------- boot ------------------------- */
+loadData();
+populateDatalists();
+renderQuickPicks();
+bindForm();
+$("#orig-input").value = STATE.orig;
+$("#dest-input").value = STATE.dest;
+$("#date-input").value = STATE.depdate;
+runQuery();
+</script>
+</body>
+</html>

@@ -1,0 +1,234 @@
+[
+  {
+    "calendar_count": 7,
+    "calendar": [
+      {
+        "date": "08-07周五",
+        "price": "¥550"
+      },
+      {
+        "date": "08-08周六",
+        "price": "¥350低"
+      },
+      {
+        "date": "08-09周日",
+        "price": "¥350低"
+      },
+      {
+        "date": "08-10周一",
+        "price": "¥620"
+      },
+      {
+        "date": "08-11周二",
+        "price": "¥350低"
+      },
+      {
+        "date": "08-12周三",
+        "price": "¥350低"
+      },
+      {
+        "date": "08-13周四",
+        "price": "¥350低"
+      }
+    ],
+    "flight_count": 0,
+    "flights": [],
+    "route": "PEK-PVG",
+    "orig": "PEK",
+    "dest": "PVG",
+    "note": "京沪经典",
+    "depdate": "2026-08-10"
+  },
+  {
+    "calendar_count": 7,
+    "calendar": [
+      {
+        "date": "08-07周五",
+        "price": "¥550"
+      },
+      {
+        "date": "08-08周六",
+        "price": "¥350低"
+      },
+      {
+        "date": "08-09周日",
+        "price": "¥350低"
+      },
+      {
+        "date": "08-10周一",
+        "price": "¥350低"
+      },
+      {
+        "date": "08-11周二",
+        "price": "¥350低"
+      },
+      {
+        "date": "08-12周三",
+        "price": "¥350低"
+      },
+      {
+        "date": "08-13周四",
+        "price": "¥350低"
+      }
+    ],
+    "flight_count": 0,
+    "flights": [],
+    "route": "PKX-SHA",
+    "orig": "PKX",
+    "dest": "SHA",
+    "note": "京沪新机场",
+    "depdate": "2026-08-10"
+  },
+  {
+    "calendar_count": 7,
+    "calendar": [
+      {
+        "date": "08-07周五",
+        "price": "¥880"
+      },
+      {
+        "date": "08-08周六",
+        "price": "¥700"
+      },
+      {
+        "date": "08-09周日",
+        "price": "¥600低"
+      },
+      {
+        "date": "08-10周一",
+        "price": "¥600低"
+      },
+      {
+        "date": "08-11周二",
+        "price": "¥600低"
+      },
+      {
+        "date": "08-12周三",
+        "price": "¥600低"
+      },
+      {
+        "date": "08-13周四",
+        "price": "¥600低"
+      }
+    ],
+    "flight_count": 0,
+    "flights": [],
+    "route": "SHA-KMG",
+    "orig": "SHA",
+    "dest": "KMG",
+    "note": "沪昆避暑",
+    "depdate": "2026-08-10"
+  },
+  {
+    "calendar_count": 7,
+    "calendar": [
+      {
+        "date": "08-07周五",
+        "price": "¥560"
+      },
+      {
+        "date": "08-08周六",
+        "price": "¥390低"
+      },
+      {
+        "date": "08-09周日",
+        "price": "¥450"
+      },
+      {
+        "date": "08-10周一",
+        "price": "¥390低"
+      },
+      {
+        "date": "08-11周二",
+        "price": "¥400"
+      },
+      {
+        "date": "08-12周三",
+        "price": "¥390低"
+      },
+      {
+        "date": "08-13周四",
+        "price": "¥390低"
+      }
+    ],
+    "flight_count": 0,
+    "flights": [],
+    "route": "SHA-SZX",
+    "orig": "SHA",
+    "dest": "SZX",
+    "note": "沪深商旅",
+    "depdate": "2026-08-10"
+  },
+  {
+    "calendar_count": 5,
+    "calendar": [
+      {
+        "date": "08-07周五",
+        "price": "¥700"
+      },
+      {
+        "date": "08-08周六",
+        "price": "¥600低"
+      },
+      {
+        "date": "08-09周日",
+        "price": "¥600低"
+      },
+      {
+        "date": "08-10周一",
+        "price": "¥600低"
+      },
+      {
+        "date": "08-11周二",
+        "price": "¥600低"
+      }
+    ],
+    "flight_count": 0,
+    "flights": [],
+    "route": "SHA-CTU",
+    "orig": "SHA",
+    "dest": "CTU",
+    "note": "沪蓉旅游",
+    "depdate": "2026-08-10"
+  },
+  {
+    "calendar_count": 7,
+    "calendar": [
+      {
+        "date": "08-07周五",
+        "price": "¥400"
+      },
+      {
+        "date": "08-08周六",
+        "price": "¥290低"
+      },
+      {
+        "date": "08-09周日",
+        "price": "¥300"
+      },
+      {
+        "date": "08-10周一",
+        "price": "¥400"
+      },
+      {
+        "date": "08-11周二",
+        "price": "¥290低"
+      },
+      {
+        "date": "08-12周三",
+        "price": "¥300"
+      },
+      {
+        "date": "08-13周四",
+        "price": "¥300"
+      }
+    ],
+    "flight_count": 0,
+    "flights": [],
+    "route": "SHA-XMN",
+    "orig": "SHA",
+    "dest": "XMN",
+    "note": "沪厦旅游",
+    "depdate": "2026-08-10"
+  }
+]
