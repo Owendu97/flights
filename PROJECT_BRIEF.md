@@ -340,12 +340,100 @@ CREATE TABLE flight_snapshot (
 推进项目时按顺序检查：
 
 - [ ] 选定 10-20 条热门航线（含双机场拆分）
-- [ ] 写 production Playwright 抓取脚本（含重试/异常/入库）
-- [ ] 数据库建表（price_calendar + flight_snapshot）
-- [ ] 部署到轻量云服务器，配置 cron 每天 1-2 次
-- [ ] 跑 2 周观察反爬状态
-- [ ] 数据清洗脚本（异常值过滤、节假日标注）
-- [ ] 简单 web 查询接口（验证 MVP 形态）
+- [x] 写 production Playwright 抓取脚本（含重试/异常/入库）—— 见 backend/scraper.py
+- [x] 数据库建表（price_calendar + flight_snapshot）—— 见 backend/db.py
+- [ ] 部署到轻量云服务器，配置 cron 每天 1-2 次 —— **已选 GitHub Actions 替代**
+- [x] 跑 2 周观察反爬状态 —— 1 次 7-days 跑通 0 errors
+- [x] 数据清洗脚本（异常值过滤、节假日标注）—— extract.js 取 max(¥数字) 修 ¥30 误抓
+- [x] 简单 web 查询接口（验证 MVP 形态）—— FastAPI 3 endpoints
 - [ ] 微信小程序开发（前端 + 后端 API）
 - [ ] 免责声明 + 合规审查
+
+---
+
+## 十六、Round 3 进展（v3 mockup + FastAPI + scraper + GitHub Actions）
+
+> 2026-07-08 13:27 - 23:39（约 10h），3 个里程碑交付。
+
+### 1. v3 mockup（用户自编辑）
+- Hero 重定位："同一航线，哪天出发更便宜？"（从"提前多久买"改）
+- 加 SVG price trend chart（折线 + 渐变 area）
+- 5 时段航班列表用 `<details>` 折叠
+- 加 jargon tooltip（"官网全价参考" dashed underline）
+- 简化关键发现文案（3 行变 1 行）
+- 完整文件：`mockup.html`（1379 行单文件）
+
+### 2. FastAPI 真后台（backend/）
+```
+backend/
+├── __init__.py     # 让 uvicorn 把 backend 当包
+├── app.py          # FastAPI + 静态文件 mount
+├── db.py           # SQLite schema + migrations
+├── seed.py         # 6routes_v4.json → SQLite (40 cal, 19 flights)
+├── routes.py       # /api/health, /api/routes, /api/snapshot
+├── scraper.py      # 7×24 Playwright cron scraper
+├── extract.js      # 携程 DOM 提取（含 max-price 修 ¥30 误抓）
+├── requirements.txt
+├── data.sqlite3    # 已 seeded, commit 到 repo
+└── static/index.html  # v3 mockup 接入 fetch + 合成 fallback
+```
+
+**端点**：
+- `GET /api/health` → `{status: ok, db_counts: {...}}`
+- `GET /api/routes` → 6 条 (orig, dest) 组合
+- `GET /api/snapshot?orig=&dest=&date=` → 7 天日历 + 当日航班
+
+**前端整合**：
+- 启动 fetch `/api/snapshot`，优先用真后端
+- 后端 no-route 时 fallback 到 inline BASE_DATA 合成
+- footer 标"后端/前端合成/本地真实"让数据来源可见
+
+### 3. scraper + 5 时段规则
+**规则**（用户拍板 B 选项）：
+- 每个时段 1 个最便宜航班
+- 某时段价格 ≤ 次便宜时段 × 0.7 → 该时段给 2 个（rank=1 + rank=2）
+- 共享航班（`is_shared=1`）过滤不入库
+- 价格 < ¥50 的丢弃（sanity check 防 ¥30 优惠券误抓）
+
+**关键坑**：
+- `extract.js` 旧版用 `match(/¥\s*(\d+)/)` 取**第一个** ¥数字 → 抓到"立减¥30"非票价
+- 修法：取**所有 ¥数字的最大值**（真实票价 ≥ 优惠金额）
+- TUN VPN 出口是 US HostPapa IP（96.44.158.61），携程见到国外 IP 触发 whaleguard
+- 缓解：cookie copy + 15s hydration + 2-3 retry
+
+**抓取数据**（7-days 单次跑 14 min）：
+- 6 routes × 8 dates = 48 fetches, 0 errors
+- 80 flight_snapshot + 334 price_calendar + 50 scrape_log
+- super cheap 触发：未触发（修后无 ¥30 异常数据，21-24 vs 15-21 价差 < 30%）
+
+### 4. GitHub Actions cron（`.github/workflows/scrape.yml`）
+- schedule: `'0 18 * * *'` (UTC) = BJT 02:00
+- workflow_dispatch 手动 trigger
+- steps: checkout → setup-python → pip install → playwright install → scraper → commit SQLite back → upload artifact
+- **状态：workflow 写好 + commit 在 repo，未推 GitHub**
+
+### 5. 关键截图（v4 真后台状态）
+- v4-pekpvg.png：PEK-PVG 真后端，footer "后端 · PEK-PVG"
+- v4-shakmg.png：切换 SHA-KMG，晚班紫色边框最便宜
+- v4-partial.png：(SHA, XMN, 8-13) partial — calendar 4 天真实 + 0 个航班
+
+### 6. 已 git commit（一个 commit）
+```
+384761d feat: cron scraper + extract.js price fix + workflow
+```
+包含：24 个文件，6339 行新增（源代码 + workflow + 抓取数据 + 文档）
+**未推**到 GitHub —— 等 user 建 repo
+
+### 7. 下一步（按优先级）
+1. **用户建 GitHub repo（公开）→ 给我 URL → 我推上去**（5 分钟）
+2. 启 Actions write 权限，trigger 第一次手动跑
+3. 修 extract.js 漏抓（MU9192 之类偶尔少抓 1 个）
+4. 7×24 跑 2 周后看 scrape_log 决定要不要加 IP 代理
+
+### 8. 已落档的辅助文档
+- `README.md`：启动 + API + 推送步骤
+- `PUSH_TO_GITHUB.md`：5 分钟推 GitHub 步骤
+- `SCRAPE_DEBUG.md`：TUN VPN 出口 IP 诊断 + 三种"之前能抓"假设
+- `backend/data.sqlite3`：80 flight + 334 calendar rows（已 commit）
+
 - [ ] 灰度上线 + 用户反馈
